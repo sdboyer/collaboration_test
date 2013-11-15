@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Module file for collaboration tests. Not much to do.
+ */
+
+/**
+ * Implements hook_simpletest_alter().
+ *
+ * This alters the list of simpletests to find all collaboration tests and
+ * normalize them into a single logical test. It selects an arbitrary test out
+ * of the aligned sets to identify as the actual test class, which will end up
+ * acting as the test leader.
+ *
+ * TODO actually do this
+ */
+function collaboration_test_simpletest_alter(&$groups) {
+
+}
+

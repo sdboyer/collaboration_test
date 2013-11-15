@@ -1,0 +1,7 @@
+name = Collaboration Testing
+description = Provides a framework for collaboration testing.
+package = Testing
+version = 7.x-0.x
+core = 7.x
+php = 5.3.2
+files[] = tests/DrupalCollaborationTestCase.php
