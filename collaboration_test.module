@@ -13,9 +13,51 @@
  * of the aligned sets to identify as the actual test class, which will end up
  * acting as the test leader.
  *
- * TODO actually do this
  */
 function collaboration_test_simpletest_alter(&$groups) {
+  $tests = array();
 
+  $builder = function($tests_dir, $base_dir, $extension) use (&$tests) {
+    // Scan it for test files if it exists.
+    if (is_dir($tests_dir)) {
+      $files = file_scan_directory($tests_dir, '/.*\.php/');
+      foreach ($files as $file) {
+        // Convert the file name into the namespaced class name.
+        $replacements = array(
+          '/' => '\\',
+          $base_dir . '/' => '',
+          '.php' => '',
+        );
+        $tests[strtr($file->uri, $replacements)][] = $extension;
+      }
+    }
+  };
+
+  $system_list = db_query("SELECT name, filename FROM {system} WHERE status = 1")->fetchAllKeyed();
+  foreach ($system_list as $extension => $filename) {
+    // Build directory in which the test files would reside.
+    $base_dir = DRUPAL_ROOT . '/' . dirname($filename) . '/lib';
+    $tests_dir = $base_dir . '/Drupal/' . $extension . '/Tests/Collaboration';
+    $builder($tests_dir, $base_dir, $extension);
+
+    // Special-case this module, allowing it to use special crazy namespacing to
+    // cover other (core) modules, but still work with simpletest's autoloader.
+    if ($extension === 'collaboration_test') {
+      foreach (glob($base_dir . "/Drupal/$extension/Tests/Core/*", GLOB_ONLYDIR) as $subdir) {
+        $tests_dir = $subdir . '/Collaboration';
+        $builder($tests_dir, $base_dir, $extension);
+      }
+    }
+  }
+
+  $groups['Collaboration'] = array();
+  foreach ($tests as $test => $extensions) {
+    $groups['Collaboration'][$test] = array(
+      'name' => substr($test, strrpos($test, '\\')),
+      'description' => 'A collaboration test', // TODO figure out how to do more here
+      'group' => 'Collaboration',
+      'collaborators' => $extensions,
+    );
+  }
 }
 
