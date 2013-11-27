@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\collaboration_test\Tests\Core\simpletest\Collaboration\SimpletestGroupAlter.
+ * Contains \Drupal\collaboration_test\Tests\Surrogate\simpletest\Collaboration\SimpletestGroupAlter.
  */
 
-namespace Drupal\collaboration_test\Tests\Core\simpletest\Collaboration;
+namespace Drupal\collaboration_test\Tests\Surrogate\simpletest\Collaboration;
 
 /**
  * Tests sanity of output after hook_simpletest_alter().

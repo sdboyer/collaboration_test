@@ -43,7 +43,7 @@ function collaboration_test_simpletest_alter(&$groups) {
     // Special-case this module, allowing it to use special crazy namespacing to
     // cover other (core) modules, but still work with simpletest's autoloader.
     if ($extension === 'collaboration_test') {
-      foreach (glob($base_dir . "/Drupal/$extension/Tests/Core/*", GLOB_ONLYDIR) as $subdir) {
+      foreach (glob($base_dir . "/Drupal/$extension/Tests/Surrogate/*", GLOB_ONLYDIR) as $subdir) {
         $tests_dir = $subdir . '/Collaboration';
         $builder($tests_dir, $base_dir, $extension);
       }
